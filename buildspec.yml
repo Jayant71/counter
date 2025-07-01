@@ -1,0 +1,12 @@
+# buildspec.yml
+version: 0.2
+
+phases:
+  build:
+    commands:
+      - echo "Copying files to S3 artifact..."
+
+artifacts:
+  files:
+    - '**/*' # Include all files (specifically index.html and buildspec.yml) for deployment
+  discard-paths: no # Preserve directory structure

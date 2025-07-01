@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Counter App (Single File)</title>
+    <!-- Tailwind CSS CDN for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom font for better aesthetics */
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Ensure full viewport height */
+            background-color: #f0f2f5; /* Light background */
+            color: #333;
+        }
+
+        /* Additional custom styling for elements not covered by basic Tailwind or for specific overrides */
+        .container-wrapper {
+            background-color: #ffffff;
+            padding: 2.5rem; /* Equivalent to p-10 */
+            border-radius: 0.75rem; /* Equivalent to rounded-xl */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 28rem; /* Equivalent to max-w-md */
+            width: 100%; /* Ensure it takes full width up to max-width */
+            border: 1px solid #e2e8f0; /* Equivalent to border border-gray-200 */
+        }
+
+        h1 {
+            color: #2c3e50; /* Darker heading color */
+            margin-bottom: 1.5rem; /* Equivalent to mb-6 */
+            font-size: 2.25rem; /* Equivalent to text-3xl */
+            font-weight: 700; /* Equivalent to font-bold */
+        }
+
+        #counter-display {
+            font-size: 4.5rem; /* Equivalent to text-6xl */
+            font-weight: 800; /* Equivalent to font-extrabold */
+            color: #2563eb; /* Blue-600 */
+        }
+
+        .button-style {
+            padding: 0.75rem 1.5rem; /* py-3 px-6 */
+            border-radius: 0.5rem; /* rounded-lg */
+            font-size: 1rem; /* text-base */
+            font-weight: 600; /* font-semibold */
+            color: white;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            cursor: pointer;
+            outline: none; /* Remove default outline */
+        }
+
+        .button-style:hover {
+            transform: translateY(-2px);
+        }
+
+        .button-style:focus {
+            ring-2: true; /* Tailwind focus ring */
+            ring-opacity: 0.5;
+        }
+
+        #decrement-btn {
+            background-color: #ef4444; /* Red-500 */
+        }
+        #decrement-btn:hover {
+            background-color: #dc2626; /* Red-600 */
+        }
+        #decrement-btn:focus {
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.5); /* Red-500 with opacity for ring */
+        }
+
+        #increment-btn {
+            background-color: #22c55e; /* Green-500 */
+        }
+        #increment-btn:hover {
+            background-color: #16a34a; /* Green-600 */
+        }
+        #increment-btn:focus {
+            box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.5); /* Green-500 with opacity for ring */
+        }
+
+        #message-box {
+            min-height: 20px; /* Ensure space for messages */
+            font-size: 0.875rem; /* text-sm */
+            color: #4b5563; /* gray-600 */
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 640px) { /* Tailwind 'sm' breakpoint */
+            .container-wrapper {
+                padding: 1.5rem; /* p-6 */
+            }
+            h1 {
+                font-size: 1.875rem; /* text-2xl */
+            }
+            #counter-display {
+                font-size: 3.75rem; /* text-5xl */
+            }
+            .button-style {
+                padding: 0.625rem 1.25rem; /* py-2.5 px-5 */
+                font-size: 0.875rem; /* text-sm */
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Main application container -->
+    <div class="container-wrapper">
+        <!-- Application Title -->
+        <h1>Simple Counter</h1>
+
+        <!-- Counter display -->
+        <div class="flex items-center justify-center mb-8">
+            <span id="counter-display">0</span>
+        </div>
+
+        <!-- Control Buttons -->
+        <div class="flex justify-center space-x-4">
+            <!-- Decrement Button -->
+            <button id="decrement-btn" class="button-style">
+                Decrement
+            </button>
+
+            <!-- Increment Button -->
+            <button id="increment-btn" class="button-style">
+                Increment
+            </button>
+        </div>
+
+        <!-- Message Box for status messages (instead of alert()) -->
+        <div id="message-box" class="mt-8">
+            <!-- Messages will appear here -->
+        </div>
+    </div>
+
+    <script>
+        // JavaScript for counter functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const counterDisplay = document.getElementById('counter-display');
+            const incrementBtn = document.getElementById('increment-btn');
+            const decrementBtn = document.getElementById('decrement-btn');
+            const messageBox = document.getElementById('message-box');
+
+            let count = 0; // Initial counter value
+
+            // Function to update the display
+            const updateDisplay = () => {
+                counterDisplay.textContent = count;
+            };
+
+            // Function to show a temporary message
+            const showMessage = (message, type = 'info') => {
+                messageBox.textContent = message;
+                // Dynamically apply Tailwind classes for styling based on message type
+                messageBox.className = `mt-8 text-center ${
+                    type === 'error' ? 'text-red-600' :
+                    type === 'success' ? 'text-green-600' :
+                    'text-gray-600'
+                }`;
+                // Clear message after a few seconds
+                setTimeout(() => {
+                    messageBox.textContent = '';
+                    messageBox.className = 'mt-8 text-center text-gray-600 min-h-[20px]'; // Reset class
+                }, 3000);
+            };
+
+            // Event listener for increment button
+            incrementBtn.addEventListener('click', () => {
+                count++;
+                updateDisplay();
+                showMessage('Counter increased!', 'success');
+            });
+
+            // Event listener for decrement button
+            decrementBtn.addEventListener('click', () => {
+                if (count > 0) { // Prevent counter from going below zero
+                    count--;
+                    updateDisplay();
+                    showMessage('Counter decreased!', 'info');
+                } else {
+                    showMessage('Cannot go below zero!', 'error');
+                }
+            });
+
+            // Initial display update
+            updateDisplay();
+        });
+    </script>
+</body>
+</html>
