@@ -1,13 +1,48 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Dice Page</title>
-</head>
-<body style="text-align:center; font-family:Arial; margin-top:100px;">
-  <h1>🎲 Dice Face</h1>
-  <h2 style="font-size:100px;">&#9856;</h2> <!-- This is Dice Face 1 -->
+  <title>Dice Roller</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 100px;
+      background-color: #f8f8f8;
+    }
 
-  <p>Refresh the page to see a different face manually.</p>
-  <p>Faces: &#9856; &#9857; &#9858; &#9859; &#9860; &#9861;</p>
+    #dice {
+      font-size: 120px;
+      margin: 20px;
+    }
+
+    button {
+      font-size: 20px;
+      padding: 10px 20px;
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      background-color: #007bff;
+      color: white;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎲 Roll the Dice</h1>
+  <div id="dice">&#9856;</div>
+  <button onclick="rollDice()">Roll Dice</button>
+
+  <script>
+    function rollDice() {
+      const diceFaces = ['&#9856;', '&#9857;', '&#9858;', '&#9859;', '&#9860;', '&#9861;'];
+      const randomIndex = Math.floor(Math.random() * 6);
+      document.getElementById("dice").innerHTML = diceFaces[randomIndex];
+    }
+  </script>
+
 </body>
 </html>
